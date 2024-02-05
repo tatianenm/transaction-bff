@@ -1,15 +1,12 @@
 package dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
-import java.util.UUID;
 
-@Getter
-@Setter
-@EqualsAndHashCode(of = "uuid")
-public class RequestTransactionDTO {
+public class RequestTransactionDTO extends TransactionDTO{
 
-    private UUID uuid;
+    private SituacaoEnum situacaoEnum;
+
+    private LocalDateTime data;
+
 }
