@@ -1,7 +1,7 @@
-package api;
+package br.com.coffeeandit.api;
 
-import dto.RequestTransactionDTO;
-import dto.TransactionDTO;
+import br.com.coffeeandit.dto.RequestTransactionDTO;
+import br.com.coffeeandit.dto.TransactionDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;

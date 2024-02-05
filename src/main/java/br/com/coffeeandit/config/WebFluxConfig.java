@@ -1,4 +1,4 @@
-package config;
+package br.com.coffeeandit.config;
 
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;

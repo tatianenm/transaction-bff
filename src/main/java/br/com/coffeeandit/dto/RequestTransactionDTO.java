@@ -1,4 +1,4 @@
-package dto;
+package br.com.coffeeandit.dto;
 
 import java.time.LocalDateTime;
 
