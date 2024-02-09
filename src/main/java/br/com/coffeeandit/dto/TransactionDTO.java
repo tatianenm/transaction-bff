@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -16,8 +18,10 @@ import java.util.UUID;
 @Setter
 @Getter
 @EqualsAndHashCode(of = "uuid")
+@RedisHash(value = "TransactionDto", timeToLive = 300)
 public class TransactionDTO {
     @Schema(description = "Código de identificação da transação")
+    @Id
     private UUID uuid;
     @Schema(description = "Valor da transação")
     @NotNull(message = "Informar o valor da transação")
