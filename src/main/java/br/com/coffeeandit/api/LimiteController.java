@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/limites")
 public class LimiteController {
 
-    private LimiteClient limiteClient;
-
     public LimiteController(LimiteClient limiteClient) {
         this.limiteClient = limiteClient;
     }
 
+    private LimiteClient limiteClient;
+
     @GetMapping(value = "/{agencia}/{conta}")
     public LimiteDiario buscarLimiteDiario(@PathVariable("agencia") final Long agencia,
                                            @PathVariable("conta") final Long conta) {
+        System.out.println("##################################FUI CHAMADO");
         return limiteClient.buscarLimiteDiario(agencia, conta);
     }
 }
