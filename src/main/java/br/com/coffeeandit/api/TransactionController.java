@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/transaction")
+@Tag(name = "/transaction", description = "Grupo de API's para manipulação de transações financeiras")
 public class TransactionController {
-
-    private TransactionService transactionService;
 
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
+    private TransactionService transactionService;
+
+
 
     @Operation(description = "API para criar uma transação financeira")
     @ResponseBody
@@ -53,6 +56,7 @@ public class TransactionController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<TransactionDTO> buscarTransacao(@PathVariable("id") final String uuid) {
         final Optional<TransactionDTO> transactionDTO = transactionService.findById(uuid);
+        System.out.println("************************ESTOU AQUI");
         if (transactionDTO.isPresent()) {
             return Mono.just(transactionDTO.get());
         }
@@ -68,7 +72,6 @@ public class TransactionController {
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<TransactionDTO> removerTransacao(@PathVariable("id") final String uuid) {
-
         return Mono.empty();
     }
 

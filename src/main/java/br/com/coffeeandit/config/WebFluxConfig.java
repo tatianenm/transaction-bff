@@ -13,3 +13,4 @@ public class WebFluxConfig implements WebFluxConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
+
