@@ -1,4 +1,4 @@
-package br.com.coffeeandit.transactionbff;
+package br.com.coffeeandit;
 
 
 import org.springframework.boot.SpringApplication;

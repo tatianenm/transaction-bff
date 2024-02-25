@@ -1,5 +1,6 @@
 package br.com.coffeeandit.api;
 
+import br.com.coffeeandit.domain.LimiteService;
 import br.com.coffeeandit.dto.LimiteDiario;
 import br.com.coffeeandit.feign.LimiteClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/limites")
 public class LimiteController {
 
-    public LimiteController(LimiteClient limiteClient) {
-        this.limiteClient = limiteClient;
+    public LimiteController(LimiteService limiteService) {
+        this.limiteService = limiteService;
     }
 
-    private LimiteClient limiteClient;
+    private LimiteService limiteService;
 
     @GetMapping(value = "/{agencia}/{conta}")
     public LimiteDiario buscarLimiteDiario(@PathVariable("agencia") final Long agencia,
                                            @PathVariable("conta") final Long conta) {
-        System.out.println("##################################FUI CHAMADO");
-        return limiteClient.buscarLimiteDiario(agencia, conta);
+
+        return limiteService.buscarLimiteDiario(agencia, conta);
     }
 }
