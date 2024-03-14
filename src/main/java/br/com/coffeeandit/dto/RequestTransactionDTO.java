@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
+@ToString(of = {"uuid", "situacaoEnum"})
 @Schema(description = "Objeto de transporte para o envio de uma promessa de transação")
 public class RequestTransactionDTO extends TransactionDTO {
 

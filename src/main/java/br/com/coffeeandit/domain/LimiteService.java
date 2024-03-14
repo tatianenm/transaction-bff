@@ -7,6 +7,7 @@ import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.decorators.Decorators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -23,29 +24,36 @@ public class LimiteService {
         this.limiteClient = limiteClient;
     }
 
-    public LimiteDiario buscarLimiteDiario(final Long agencia, final Long conta){
+    public Mono<Supplier<LimiteDiario>>  buscarLimiteDiario(final Long agencia, final Long conta){
 
-        try {
+       /* try {para testar circuit breaker
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-
-        var limiteDiarioSup = fallback(agencia, conta);
+        }*/
+       // var limiteDiarioSup = fallback(agencia, conta);
         //countCircuitBreaker.decorateSupplier(() -> limiteClient.buscarLimiteDiario(agencia, conta));
+        //return limiteDiarioSup.get();quando temos um get é bloqueante
 
-        return limiteDiarioSup.get();
+        return buscarLimiteDiarioSupplier(agencia, conta);
+
+
     }
 
-    private Supplier<LimiteDiario> fallback(final Long agencia, final Long conta){
-        var limiteDiarioSup = countCircuitBreaker.decorateSupplier(() -> limiteClient.buscarLimiteDiario(agencia, conta));
+    private Mono<Supplier<LimiteDiario>> buscarLimiteDiarioSupplier(final Long agencia, final Long conta){
+        var limiteDiarioSup = countCircuitBreaker.decorateSupplier(() ->
+                limiteClient.buscarLimiteDiario(agencia, conta));
         
-        return Decorators
-                .ofSupplier(limiteDiarioSup)
-                .withCircuitBreaker(countCircuitBreaker)
-                .withFallback(Arrays.asList(CallNotPermittedException.class),
-                        e -> this.getStaticLimit())
-                .decorate();
+        return Mono.fromSupplier(() -> {
+            return
+                Decorators
+                        .ofSupplier(limiteDiarioSup)
+                        .withCircuitBreaker(countCircuitBreaker)
+                        .withFallback(Arrays.asList(CallNotPermittedException.class),
+                                e -> this.getStaticLimit())
+                        .decorate();
+        });
+
 
     }
 
