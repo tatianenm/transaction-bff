@@ -12,4 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface LimiteClient {
     @RequestMapping(path = "/limite-diario/{agencia}/{conta}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     LimiteDiario buscarLimiteDiario(@PathVariable("agencia") final Long agencia, @PathVariable("conta") final Long conta);
+
+
+
 }

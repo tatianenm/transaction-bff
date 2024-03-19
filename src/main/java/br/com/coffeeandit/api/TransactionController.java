@@ -13,9 +13,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -81,5 +85,27 @@ public class TransactionController {
     public Mono<TransactionDTO> confirmarTransação(@PathVariable("id") final String uuid) {
         return Mono.empty();
     }
+
+
+    @GetMapping(value = "/{agencia}/{conta}")
+    public Flux<List<TransactionDTO>> buscarTransações(@PathVariable("agencia") final Long agencia,
+                                                       @PathVariable("conta") final Long conta){
+        return transactionService.findByAgenciaAndContaFlux(agencia, conta);
+
+    }
+
+    @GetMapping(value = "/sse/{agencia}/{conta}")
+    public Flux<ServerSentEvent<List<TransactionDTO>>> buscarTransaçõesSSE(@PathVariable("agencia") final Long agencia,
+                                                                        @PathVariable("conta") final Long conta){
+       return Flux.interval(Duration.ofSeconds(2))
+                        .map(sequence -> ServerSentEvent.<List<TransactionDTO>>builder()
+                                .id(String.valueOf(sequence))
+                                .event("transações")
+                                .data(transactionService.findByAgenciaAndConta(agencia, conta))
+                                .retry(Duration.ofSeconds(1))
+                                .build());
+
+    }
+
 
 }
