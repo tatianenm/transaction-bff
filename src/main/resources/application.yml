@@ -18,6 +18,8 @@ spring:
     timeout: 5000
   application:
     name: transaction-bff
+ # config:
+   # import: optional:configserver:http://localhost:8888
 
 springdoc:
   swagger-ui:
