@@ -30,7 +30,7 @@ limites:
   url: http://localhost:8081
 
 transaction:
-  url: http://localhost:8082
+  url: http://localhost:8080
 
 app:
   topic: transaction
